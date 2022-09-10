@@ -6,16 +6,25 @@ public class RockInstantiate : MonoBehaviour
 {
     public GameObject RockPrefab;
 
+    Vector2 ClickPosition;
+    Camera MainCam;
 
-
-    void Update()
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Instantiate(RockPrefab, transform.position + (transform.right * 3), transform.rotation);
-        }
-
+        MainCam = Camera.main;
     }
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            Vector3 clickPoint = Input.mousePosition;
+            clickPoint.z = Mathf.Abs(MainCam.transform.position.z);
+            Vector3 mouseClickPosition = MainCam.ScreenToWorldPoint(clickPoint);
+            mouseClickPosition.z = 0f;
+            Instantiate(RockPrefab, mouseClickPosition, Quaternion.identity);
+        }
+    }
+
 }
 
 
